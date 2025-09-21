@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aethermoor Chronicles</title>
+    <meta name="description" content="Episches 2D RPG mit prozeduralen Dimensionen">
+    <meta name="theme-color" content="#2D1B69">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="./icon-512x512.png">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="screen active">
+        <div class="loading-content">
+            <h1>Aethermoor Chronicles</h1>
+            <div class="loading-bar">
+                <div class="loading-progress" id="loadingProgress"></div>
+            </div>
+            <p id="loadingText">Dimensionen werden initialisiert...</p>
+        </div>
+    </div>
+
+    <!-- Main Menu -->
+    <div id="mainMenu" class="screen">
+        <div class="menu-content">
+            <h1 class="game-title">Aethermoor Chronicles</h1>
+            <div class="menu-buttons">
+                <button class="menu-btn primary" id="newGameBtn">Neues Spiel</button>
+                <button class="menu-btn secondary" id="loadGameBtn">Spiel Laden</button>
+                <button class="menu-btn secondary" id="settingsBtn">Einstellungen</button>
+                <button class="menu-btn secondary" id="aboutBtn">Über das Spiel</button>
+            </div>
+            <div class="version-info">v1.0.0 - Offline Beta</div>
+        </div>
+    </div>
+
+    <!-- Character Creation -->
+    <div id="characterCreation" class="screen">
+        <div class="creation-content">
+            <h2>Charakter Erschaffen</h2>
+            <div class="class-selection">
+                <div class="class-card" data-class="voidwalker">
+                    <h3>Voidwalker</h3>
+                    <div class="class-icon">🌙</div>
+                    <p>Schattenmeister mit Teleportationskräften</p>
+                    <div class="class-stats">
+                        <span>Geschicklichkeit: ⭐⭐⭐⭐⭐</span>
+                        <span>Stärke: ⭐⭐</span>
+                        <span>Intelligenz: ⭐⭐⭐</span>
+                    </div>
+                </div>
+                <div class="class-card" data-class="aethermancer">
+                    <h3>Aethermancer</h3>
+                    <div class="class-icon">🔮</div>
+                    <p>Elementarmagie und Dimensionsmanipulation</p>
+                    <div class="class-stats">
+                        <span>Geschicklichkeit: ⭐⭐</span>
+                        <span>Stärke: ⭐⭐</span>
+                        <span>Intelligenz: ⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+                <div class="class-card" data-class="forgemaster">
+                    <h3>Forgemaster</h3>
+                    <div class="class-icon">⚒️</div>
+                    <p>Rüstungsexperte und Ausrüstungsschmied</p>
+                    <div class="class-stats">
+                        <span>Geschicklichkeit: ⭐⭐</span>
+                        <span>Stärke: ⭐⭐⭐⭐⭐</span>
+                        <span>Intelligenz: ⭐⭐⭐</span>
+                    </div>
+                </div>
+            </div>
+            <div class="name-input">
+                <input type="text" id="characterName" placeholder="Charaktername eingeben..." maxlength="20">
+            </div>
+            <div class="creation-buttons">
+                <button class="menu-btn secondary" id="backToMenuBtn">Zurück</button>
+                <button class="menu-btn primary" id="createCharacterBtn" disabled>Charakter Erschaffen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Interface -->
+    <div id="gameInterface" class="screen">
+        <!-- Top HUD -->
+        <div class="hud-top">
+            <div class="character-info">
+                <div class="char-portrait">
+                    <span id="charIcon">🌙</span>
+                </div>
+                <div class="char-details">
+                    <h3 id="charName">Charakter</h3>
+                    <div class="level-info">
+                        <span>Level <span id="charLevel">1</span></span>
+                        <div class="xp-bar">
+                            <div class="xp-fill" id="xpBar"></div>
+                            <span class="xp-text" id="xpText">0/100</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="resources">
+                <div class="resource">
+                    <span class="resource-icon">💎</span>
+                    <span id="aetherEssence">0</span>
+                </div>
+                <div class="resource">
+                    <span class="resource-icon">🔘</span>
+                    <span id="dimensionalFragments">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Exploration View -->
+            <div id="explorationView" class="game-view active">
+                <div class="dimension-info">
+                    <h3 id="dimensionName">Schatten-Dimension Alpha-7</h3>
+                    <div class="dimension-stability">
+                        <span>Stabilität: </span>
+                        <div class="stability-bar">
+                            <div class="stability-fill" id="stabilityBar" style="width: 100%"></div>
+                        </div>
+                        <span id="stabilityText">100%</span>
+                    </div>
+                </div>
+
+                <div class="exploration-grid" id="explorationGrid">
+                    <!-- Prozedurale Räume werden hier generiert -->
+                </div>
+
+                <div class="exploration-actions">
+                    <button class="action-btn" id="exploreBtn">🔍 Erkunden</button>
+                    <button class="action-btn" id="restBtn">⛺ Rasten</button>
+                    <button class="action-btn" id="dimensionShiftBtn">🌀 Dimension Wechseln</button>
+                </div>
+            </div>
+
+            <!-- Combat View -->
+            <div id="combatView" class="game-view">
+                <div class="combat-area">
+                    <div class="enemy-info">
+                        <h3 id="enemyName">Schatten-Läufer</h3>
+                        <div class="enemy-hp">
+                            <div class="hp-bar">
+                                <div class="hp-fill" id="enemyHpBar"></div>
+                                <span class="hp-text" id="enemyHpText">100/100</span>
+                            </div>
+                        </div>
+                        <div class="enemy-sprite" id="enemySprite">👹</div>
+                    </div>
+
+                    <div class="combat-log" id="combatLog">
+                        <p>Kampf beginnt!</p>
+                    </div>
+
+                    <div class="player-combat">
+                        <div class="combat-abilities">
+                            <button class="ability-btn" data-ability="attack">⚔️ Angriff</button>
+                            <button class="ability-btn" data-ability="special">✨ Spezial</button>
+                            <button class="ability-btn" data-ability="defend">🛡️ Verteidigen</button>
+                            <button class="ability-btn" data-ability="escape">🏃 Fliehen</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory View -->
+            <div id="inventoryView" class="game-view">
+                <div class="inventory-panel">
+                    <h3>Quantum Inventar</h3>
+                    <div class="existence-points">
+                        <span>Existenz-Punkte: </span>
+                        <span id="currentEP">5</span>/<span id="maxEP">20</span>
+                    </div>
+                    <div class="inventory-grid" id="inventoryGrid">
+                        <!-- Items werden dynamisch generiert -->
+                    </div>
+                </div>
+
+                <div class="equipment-panel">
+                    <h3>Ausrüstung</h3>
+                    <div class="equipment-slots">
+                        <div class="equipment-slot" data-slot="weapon">
+                            <div class="slot-label">Waffe</div>
+                            <div class="slot-item" id="weaponSlot">⚔️</div>
+                        </div>
+                        <div class="equipment-slot" data-slot="armor">
+                            <div class="slot-label">Rüstung</div>
+                            <div class="slot-item" id="armorSlot">👕</div>
+                        </div>
+                        <div class="equipment-slot" data-slot="accessory">
+                            <div class="slot-label">Accessoire</div>
+                            <div class="slot-item" id="accessorySlot">💍</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <button class="nav-btn active" data-view="explorationView">
+                <span class="nav-icon">🗺️</span>
+                <span>Erkunden</span>
+            </button>
+            <button class="nav-btn" data-view="inventoryView">
+                <span class="nav-icon">🎒</span>
+                <span>Inventar</span>
+            </button>
+            <button class="nav-btn" data-view="skillsView">
+                <span class="nav-icon">📜</span>
+                <span>Fähigkeiten</span>
+            </button>
+            <button class="nav-btn" id="menuBtn">
+                <span class="nav-icon">☰</span>
+                <span>Menü</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <h3>Einstellungen</h3>
+            <div class="setting-item">
+                <label>Musik</label>
+                <input type="range" id="musicVolume" min="0" max="100" value="50">
+            </div>
+            <div class="setting-item">
+                <label>Effekte</label>
+                <input type="range" id="sfxVolume" min="0" max="100" value="75">
+            </div>
+            <div class="setting-item">
+                <label>Auto-Speichern</label>
+                <input type="checkbox" id="autoSave" checked>
+            </div>
+            <div class="setting-actions">
+                <button class="menu-btn secondary" id="exportSaveBtn">Spielstand Exportieren</button>
+                <button class="menu-btn secondary" id="importSaveBtn">Spielstand Importieren</button>
+                <input type="file" id="importFile" accept=".json" style="display: none;">
+            </div>
+            <div class="modal-buttons">
+                <button class="menu-btn primary" id="closeSettingsBtn">Schließen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level Up Modal -->
+    <div id="levelUpModal" class="modal">
+        <div class="modal-content level-up">
+            <h3>🎉 LEVEL UP! 🎉</h3>
+            <div class="level-up-info">
+                <p>Du hast Level <span id="newLevel">2</span> erreicht!</p>
+                <p>Du erhältst <span id="skillPoints">3</span> Fertigkeitspunkte.</p>
+            </div>
+            <div class="stat-upgrades">
+                <div class="stat-upgrade">
+                    <span>Geschicklichkeit (+1)</span>
+                    <button class="upgrade-btn" data-stat="agility">+</button>
+                </div>
+                <div class="stat-upgrade">
+                    <span>Stärke (+1)</span>
+                    <button class="upgrade-btn" data-stat="strength">+</button>
+                </div>
+                <div class="stat-upgrade">
+                    <span>Intelligenz (+1)</span>
+                    <button class="upgrade-btn" data-stat="intelligence">+</button>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="menu-btn primary" id="confirmLevelUpBtn">Bestätigen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script type="module" src="./app.js"></script>
+</body>
+</html>
